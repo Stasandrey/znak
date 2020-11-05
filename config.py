@@ -4,7 +4,7 @@
 import configparser
 
 class Configuration:
-    DEFAULT = { 'Logging':{ 'LogToFile':'False'
+    DEFAULT = { 'Logging':{ 'LogToFile':'False', 
                             'LogFileName':'znak_def.log', 
                             'LogToConsole':'True', 
                             'LogLevel':'INFO', 
@@ -26,3 +26,7 @@ class Configuration:
         if res == None:
             res = self.DEFAULT[section][item]
         return res
+
+if __name__ == "__main__":
+    print( "Этот модуль является частью приложения." )
+    print( "Для запуска приложения выполните main.py" )
