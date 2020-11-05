@@ -13,23 +13,35 @@ class Log:
     def __init__( self, cfg ):
         self.cfg = cfg
         fname = None
-        if self.cfg( 'Logging', 'LoggingToFile' ) == "True":
-            fname = self.cfg( 'Logging', 'LogFileName' )
-        level = self.LEVELS[self.cfg( 'Logging', 'LogLevel' )]
-        self.log = logging.basicConfig( filename = fname, encoding = 'utf-8', level=level )
+        if self.cfg.get( 'Logging', 'LogToFile' ) == "True":
+            fname = self.cfg.get( 'Logging', 'LogFileName' )
+            open( fname, 'wt' ).close()
+        level = self.LEVELS[self.cfg.get( 'Logging', 'LogLevel' )]
+        self.log = logging.basicConfig( filename = fname, level=level )
+        self.logToConsole = False
+        if self.cfg.get( 'Logging', 'LogToConsole' ) == 'True':
+            self.logToConsole = True
     
     def debug( self, s ):
         logging.debug( s )
-        
+        if self.logToConsole:
+            print( s )
+    
     def info( self, s ):
         logging.info( s )
-        
+        if self.logToConsole:
+            print( s )
+            
     def warning( self, s ):
-       logging.warning( s )
-      
+        logging.warning( s )
+        if self.logToConsole:
+            print( s )
+            
     def error( self, s ): 
-       logging.error( s ) 
-
+        logging.error( s ) 
+        if self.logToConsole:
+            print( s )
+            
 if __name__ == "__main__":
     print( "Этот модуль является частью приложения." )
     print( "Для запуска приложения выполните main.py" )
