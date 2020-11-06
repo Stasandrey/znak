@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project znak -->
-<!-- Saved: 2020-11-05, 12:19:25 -->
+<!-- Saved: 2020-11-05, 15:55:32 -->
 <!-- Copyright (C) 2020 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -13,12 +13,19 @@
   <Email></Email>
   <Eol index="0"/>
   <Sources>
+    <Source>Ui_MainWindow.py</Source>
     <Source>__init__.py</Source>
     <Source>config.py</Source>
+    <Source>log.py</Source>
     <Source>main.py</Source>
+    <Source>main_window.py</Source>
   </Sources>
+  <Forms>
+    <Form>MainWindow.ui</Form>
+  </Forms>
   <Others>
     <Other>.gitignore</Other>
+    <Other>znak.ini</Other>
   </Others>
   <MainScript>main.py</MainScript>
   <Vcs>

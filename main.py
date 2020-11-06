@@ -3,13 +3,17 @@
 
 import config
 import log
-
-import Ui_MainWindow
+from PyQt5 import QtWidgets
+import main_window
 
 CONFIG_FILE_NAME = "znak.ini"
 
 if __name__ == "__main__":
+    import sys
     cfg = config.Configuration( CONFIG_FILE_NAME )
     log = log.Log( cfg )
     log.info( "Создание главного окна." )
-    mainWindow = 
+    app = QtWidgets.QApplication( sys.argv )
+    mainWindow = main_window.MainWindow()
+    mainWindow.show()
+    sys.exit( app.exec_() )
