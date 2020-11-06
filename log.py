@@ -9,7 +9,8 @@ class Log:
                 'ERROR':logging.ERROR, 
                 'CRITICAL':logging.CRITICAL        
                 }
-    
+    consoleWindow = None
+    consoleLevel = 0
     def __init__( self, cfg ):
         self.cfg = cfg
         fname = None
@@ -25,22 +26,38 @@ class Log:
     def debug( self, s ):
         logging.debug( s )
         if self.logToConsole:
-            print( s )
+            print( "DEBUG:%s"%( s ) )
+        if self.consoleWindow != None:
+            if self.consoleLevel <= 3:
+                self.consoleWindow.text.insertPlainText( 'DEBUG:%s\n'%( s ) )
+                self.consoleWindow.repaint()
     
     def info( self, s ):
         logging.info( s )
         if self.logToConsole:
-            print( s )
+            print( "INFO:%s"%( s ) )
+        if self.consoleWindow != None:
+            if self.consoleLevel <= 4:
+                    self.consoleWindow.text.insertPlainText( 'INFO:%s\n'%( s ) )
+                    self.consoleWindow.repaint()
             
     def warning( self, s ):
         logging.warning( s )
         if self.logToConsole:
-            print( s )
+            print( "WARNING:%s"%( s ) )
+        if self.consoleWindow != None:
+            if self.consoleLevel <= 2:
+                self.consoleWindow.text.insertPlainText( 'WARNING:%s\n'%( s ) )
+                self.consoleWindow.repaint()
             
     def error( self, s ): 
         logging.error( s ) 
         if self.logToConsole:
-            print( s )
+            print( "ERROR:%s"%( s ) )
+        if self.consoleWindow != None:
+            if self.consoleLevel <= 2:
+                self.consoleWindow.text.insertPlainText( 'ERROR:%s\n'%( s ) )
+                self.consoleWindow.repaint()
             
 if __name__ == "__main__":
     print( "Этот модуль является частью приложения." )

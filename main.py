@@ -3,6 +3,7 @@
 
 import config
 import log
+import database
 from PyQt5 import QtWidgets
 import main_window
 
@@ -12,8 +13,9 @@ if __name__ == "__main__":
     import sys
     cfg = config.Configuration( CONFIG_FILE_NAME )
     log = log.Log( cfg )
+    db = database.Database( log, cfg )
     log.info( "Создание главного окна." )
     app = QtWidgets.QApplication( sys.argv )
-    mainWindow = main_window.MainWindow()
+    mainWindow = main_window.MainWindow( log, cfg, db )
     mainWindow.show()
     sys.exit( app.exec_() )

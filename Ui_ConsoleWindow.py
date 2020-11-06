@@ -14,17 +14,35 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ConsoleWindow(object):
     def setupUi(self, ConsoleWindow):
         ConsoleWindow.setObjectName("ConsoleWindow")
-        ConsoleWindow.resize(473, 293)
-        self.textBrowser = QtWidgets.QTextBrowser(ConsoleWindow)
-        self.textBrowser.setGeometry(QtCore.QRect(0, 10, 471, 271))
-        self.textBrowser.setObjectName("textBrowser")
+        ConsoleWindow.resize(562, 379)
+        self.text = QtWidgets.QTextEdit(ConsoleWindow)
+        self.text.setGeometry(QtCore.QRect(10, 50, 541, 321))
+        self.text.setMinimumSize(QtCore.QSize(100, 100))
+        self.text.setBaseSize(QtCore.QSize(300, 200))
+        self.text.setReadOnly(True)
+        self.text.setObjectName("text")
+        self.level = QtWidgets.QComboBox(ConsoleWindow)
+        self.level.setGeometry(QtCore.QRect(120, 15, 76, 24))
+        self.level.setObjectName("level")
+        self.level.addItem("")
+        self.level.addItem("")
+        self.level.addItem("")
+        self.level.addItem("")
+        self.label = QtWidgets.QLabel(ConsoleWindow)
+        self.label.setGeometry(QtCore.QRect(20, 20, 58, 16))
+        self.label.setObjectName("label")
 
         self.retranslateUi(ConsoleWindow)
         QtCore.QMetaObject.connectSlotsByName(ConsoleWindow)
 
     def retranslateUi(self, ConsoleWindow):
         _translate = QtCore.QCoreApplication.translate
-        ConsoleWindow.setWindowTitle(_translate("ConsoleWindow", "Консоль"))
+        ConsoleWindow.setWindowTitle(_translate("ConsoleWindow", "Form"))
+        self.level.setItemText(0, _translate("ConsoleWindow", "INFO"))
+        self.level.setItemText(1, _translate("ConsoleWindow", "DEBUG"))
+        self.level.setItemText(2, _translate("ConsoleWindow", "WARNING"))
+        self.level.setItemText(3, _translate("ConsoleWindow", "ERROR"))
+        self.label.setText(_translate("ConsoleWindow", "Уровень"))
 
 
 if __name__ == "__main__":

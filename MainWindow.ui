@@ -45,15 +45,17 @@
      <addaction name="action_3"/>
      <addaction name="action_4"/>
     </widget>
+    <widget class="QMenu" name="menu_3">
+     <property name="title">
+      <string>Базы данных</string>
+     </property>
+     <addaction name="actCreateDatabase"/>
+     <addaction name="actChangeDatabase"/>
+    </widget>
     <addaction name="menu_2"/>
-    <addaction name="separator"/>
-    <addaction name="action_6"/>
-    <addaction name="action_7"/>
-    <addaction name="separator"/>
+    <addaction name="menu_3"/>
     <addaction name="actOptions"/>
-    <addaction name="separator"/>
     <addaction name="actConsole"/>
-    <addaction name="separator"/>
     <addaction name="actExit"/>
    </widget>
    <addaction name="menu"/>
@@ -97,6 +99,16 @@
   <action name="actConsole">
    <property name="text">
     <string>Консоль логов</string>
+   </property>
+  </action>
+  <action name="actCreateDatabase">
+   <property name="text">
+    <string>Создать новую...</string>
+   </property>
+  </action>
+  <action name="actChangeDatabase">
+   <property name="text">
+    <string>Сменить...</string>
    </property>
   </action>
  </widget>
