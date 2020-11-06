@@ -43,6 +43,8 @@ class Ui_MainWindow(object):
         self.action_7.setObjectName("action_7")
         self.actOptions = QtWidgets.QAction(MainWindow)
         self.actOptions.setObjectName("actOptions")
+        self.actConsole = QtWidgets.QAction(MainWindow)
+        self.actConsole.setObjectName("actConsole")
         self.menu_2.addAction(self.action_3)
         self.menu_2.addAction(self.action_4)
         self.menu.addAction(self.menu_2.menuAction())
@@ -51,6 +53,8 @@ class Ui_MainWindow(object):
         self.menu.addAction(self.action_7)
         self.menu.addSeparator()
         self.menu.addAction(self.actOptions)
+        self.menu.addSeparator()
+        self.menu.addAction(self.actConsole)
         self.menu.addSeparator()
         self.menu.addAction(self.actExit)
         self.menuBar.addAction(self.menu.menuAction())
@@ -69,6 +73,7 @@ class Ui_MainWindow(object):
         self.action_6.setText(_translate("MainWindow", "Архивировать базу данных..."))
         self.action_7.setText(_translate("MainWindow", "Восстановить базу данных..."))
         self.actOptions.setText(_translate("MainWindow", "Настройки..."))
+        self.actConsole.setText(_translate("MainWindow", "Консоль логов"))
 
 
 if __name__ == "__main__":

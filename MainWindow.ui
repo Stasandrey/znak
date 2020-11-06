@@ -52,6 +52,8 @@
     <addaction name="separator"/>
     <addaction name="actOptions"/>
     <addaction name="separator"/>
+    <addaction name="actConsole"/>
+    <addaction name="separator"/>
     <addaction name="actExit"/>
    </widget>
    <addaction name="menu"/>
@@ -90,6 +92,11 @@
   <action name="actOptions">
    <property name="text">
     <string>Настройки...</string>
+   </property>
+  </action>
+  <action name="actConsole">
+   <property name="text">
+    <string>Консоль логов</string>
    </property>
   </action>
  </widget>
