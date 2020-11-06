@@ -13,8 +13,18 @@ class Database:
         
     def createDatabase( self, name ):
         self.log.info( "Создание базы данных %s"%( name ) )
+        self.db.close()
         self.db.setDatabaseName( name )
         self.db.open()
+        ## con.tables
+        
+        res = QtSql.QSqlQuery( "CREATE TABLE GTIN ( GTIN TEXT, \
+                                                    MODEL TEXT, \
+                                                    SIZE TEXT );" )                                ;" )
+        
+        
+        print( res )
+        
         
     def changeDatabase( self, name ):
         self.log.info( "Открытие базы данных %s"%( name ) )
