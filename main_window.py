@@ -10,10 +10,11 @@ import Ui_MainWindow
 class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
     console = None
     isConsole = False
-    def __init__( self, log, cfg, db, parent = None):
+    def __init__( self, log, cfg, db, api, parent = None):
         self.log = log
         self.cfg = cfg
         self.db = db
+        self.api = api
         self.log.info( "Конструктор главного окна" )
         QtWidgets.QWidget.__init__( self, parent )
         self.setupUi( self )
@@ -30,6 +31,7 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
         
         self.actCreateDatabase.triggered.connect( self.createDatabase )
         self.actChangeDatabase.triggered.connect( self.changeDatabase )
+        self.actSyncDatabase.triggered.connect( self.syncDatabase )
         self.actConsole.triggered.connect( self.doConsole )
         self.actOptions.triggered.connect( self.doOptions )
         self.actExit.triggered.connect( self.close )
@@ -39,10 +41,46 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
                                directory = QtCore.QDir.currentPath(), 
                                filter = "All (*)")
         if res[0] != "":
+            self.log.info( "Создание новой базы данных%s"%( res[0] ) )
             self.db.createDatabase( res[0] )
         
     def changeDatabase( self ):
         pass
+
+    def syncDatabase( self ):
+        self.log.info( "Синхронизация базы данных с системой Честный знак" )
+        res = ( self.api.do( 'get_gtins', {} ) )['data']['results']
+        n = 0
+        gtin = []
+        for i in res:
+            mr = ['','']
+            if 'model' in i:
+                if 'productSize' in i:
+                    if 'gtin' in i:    
+                        mr = []
+                        mr.append( i['gtin'] )
+                        mr.append( i['model'][i['model'].find( 'Модель' ) + 7:len( i['model'] )] )
+                        mr.append( i['productSize'] )
+                        gtin.append( mr )
+                        n = n + 1
+        self.log.info( 'Получено %s кодов.'%( n ) )
+        self.log.info( "Удаление записей" )
+        self.db.runSql( "DELETE FROM GTINS;" )
+        self.log.info( "Запись в базуданных" )
+        n = 0
+        for item in gtin:
+            self.db.runSql( "INSERT INTO GTINS VALUES ( '%s', '%s', '%s' );"%(
+                                item[0], item[1], item[2] ) )
+            n = n + 1
+            print( n )
+
+#        s = ''
+#        for item in gtin:
+#            s = s + "\nINSERT INTO GTINS VALUES ( '%s', '%s', '%s' );"%(
+#                                item[0], item[1], item[2] )
+#        self.db.runSql( s )
+        self.log.info( 'OK' )
+        
 
     def doConsole( self ):
         self.log.info( "Показать консоль" )

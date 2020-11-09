@@ -9,6 +9,10 @@ class Configuration:
                             'LogToConsole':'True', 
                             'LogLevel':'INFO', 
                             'AutoOpenConsoleWindow':'True'
+                            }, 
+                'Database':{ 'Format':'QSQLITE', 
+                             'DatabaseName':'main.db'
+                    
                             }
         
         

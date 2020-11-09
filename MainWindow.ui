@@ -51,6 +51,7 @@
      </property>
      <addaction name="actCreateDatabase"/>
      <addaction name="actChangeDatabase"/>
+     <addaction name="actSyncDatabase"/>
     </widget>
     <addaction name="menu_2"/>
     <addaction name="menu_3"/>
@@ -58,7 +59,21 @@
     <addaction name="actConsole"/>
     <addaction name="actExit"/>
    </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>Отгрузки</string>
+    </property>
+    <addaction name="actNewOtgruska"/>
+    <addaction name="actChangeOtgruzka"/>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>ДС</string>
+    </property>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_4"/>
+   <addaction name="menu_5"/>
   </widget>
   <action name="actExit">
    <property name="text">
@@ -109,6 +124,21 @@
   <action name="actChangeDatabase">
    <property name="text">
     <string>Сменить...</string>
+   </property>
+  </action>
+  <action name="actSyncDatabase">
+   <property name="text">
+    <string>Синхронизировать с системой</string>
+   </property>
+  </action>
+  <action name="actNewOtgruska">
+   <property name="text">
+    <string>Новая отгрузка</string>
+   </property>
+  </action>
+  <action name="actChangeOtgruzka">
+   <property name="text">
+    <string>Выбрать отгрузку</string>
    </property>
   </action>
  </widget>

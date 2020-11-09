@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project znak -->
-<!-- Saved: 2020-11-06, 14:43:01 -->
+<!-- Saved: 2020-11-09, 11:32:11 -->
 <!-- Copyright (C) 2020 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -17,6 +17,7 @@
     <Source>Ui_MainWindow.py</Source>
     <Source>Ui_OptionsWindow.py</Source>
     <Source>__init__.py</Source>
+    <Source>ch_znak_api.py</Source>
     <Source>config.py</Source>
     <Source>console_window.py</Source>
     <Source>database.py</Source>
@@ -24,6 +25,7 @@
     <Source>main.py</Source>
     <Source>main_window.py</Source>
     <Source>options_window.py</Source>
+    <Source>znak.ini</Source>
   </Sources>
   <Forms>
     <Form>ConsoleWindow.ui</Form>
