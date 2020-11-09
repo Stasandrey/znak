@@ -63,7 +63,7 @@
     <property name="title">
      <string>Отгрузки</string>
     </property>
-    <addaction name="actNewOtgruska"/>
+    <addaction name="actNewOtgruzka"/>
     <addaction name="actChangeOtgruzka"/>
    </widget>
    <widget class="QMenu" name="menu_5">
@@ -131,7 +131,7 @@
     <string>Синхронизировать с системой</string>
    </property>
   </action>
-  <action name="actNewOtgruska">
+  <action name="actNewOtgruzka">
    <property name="text">
     <string>Новая отгрузка</string>
    </property>

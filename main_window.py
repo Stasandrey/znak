@@ -2,9 +2,10 @@
 # -*- coding:utf-8 -*-
 
 from PyQt5 import QtCore, QtWidgets
-
+import random
 #import options_window
 import console_window
+import otgruzka_window
 import Ui_MainWindow
 
 class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
@@ -19,7 +20,6 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
         QtWidgets.QWidget.__init__( self, parent )
         self.setupUi( self )
         self.setCentralWidget( self.mdiArea )
-        
         self.log.info( "Создание окна консоли" )  
         self.console = console_window.ConsoleWindow( log, cfg )
         self.console.setAttribute( QtCore.Qt.WA_DeleteOnClose )
@@ -28,15 +28,57 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
             self.isConsole = True
             self.mdiArea.addSubWindow( self.console )
             self.console.show()
-        
-        self.actCreateDatabase.triggered.connect( self.createDatabase )
-        self.actChangeDatabase.triggered.connect( self.changeDatabase )
-        self.actSyncDatabase.triggered.connect( self.syncDatabase )
+        self.actCreateDatabase.triggered.connect( self.doCreateDatabase )
+        self.actChangeDatabase.triggered.connect( self.doChangeDatabase )
+        self.actSyncDatabase.triggered.connect( self.doSyncDatabase )
         self.actConsole.triggered.connect( self.doConsole )
         self.actOptions.triggered.connect( self.doOptions )
         self.actExit.triggered.connect( self.close )
-        
-    def createDatabase( self ):
+        self.actNewOtgruzka.triggered.connect( self.doNewOtgruzka )
+        self.actChangeOtgruzka.triggered.connect( self.doChangeOtgruzka )
+    
+    def doNewOtgruzka( self ):
+        s, ok = QtWidgets.QInputDialog.getText( self, "Новая отгрузка", 
+                                            "Введите название отгрузки" )
+        if ok:
+            tblName = "TBL_" + str( random.randrange( 1000000, 9999999 ) )
+            while len( self.db.runSql( "SELECT * FROM OTGRUZKI WHERE TBL_NAME = '%s';"%(
+                          tblName ) ) ) > 0:
+                tblName = str( random.randrange( 1000000, 9999999 ) )
+            self.db.runSql( "INSERT INTO OTGRUZKI VALUES ( '%s', '%s' );"%(
+                          s, tblName) )
+            self.db.runSql( "CREATE TABLE %s ( MODEL TEXT, SIZE TEXT, GTIN TEXT, SOURCE TEXT, NUMBER INTEGER );"%( tblName ) )
+            print( "CREATE TABLE %s ( GTIN TEXT, SOURCE TEXT, NUMBER INTEGER );"%( tblName ) )
+            self.log.info( 'Создание отгрузки %s TBL_NAME = %s'%( s, tblName ) )
+            self.db.otgruska = tblName
+            self.doChangeOtgruzka( tblName )
+    
+    def doChangeOtgruzka( self, name = '' ):
+        list = [] 
+        res = self.db.runSql( "SELECT * FROM OTGRUZKI;" )
+        for item in res:
+            list.append( item['NAME'] )
+            
+        if name == False:
+            s, ok = QtWidgets.QInputDialog.getItem( self, "Смена отгрузки", 
+                                                    "Выберите отгрузку", 
+                                                    list, 
+                                                    current = 0)
+            if ok:
+                name = s
+        if name != '':
+            if name != False:
+                for i in res:
+                    if name == i['NAME']:
+                        tbl = i['TABLE_NAME']
+                self.otgruzka = otgruzka_window.OtgruzkaWindow( self.log, self.cfg,
+                                                                self.db, self.api, 
+                                                                tbl, name )
+                self.otgruzka.setAttribute( QtCore.Qt.WA_DeleteOnClose )
+                self.mdiArea.addSubWindow( self.otgruzka )
+                self.otgruzka.show()
+    
+    def doCreateDatabase( self ):
         res = QtWidgets.QFileDialog.getSaveFileName( caption = "Выберите имя и место хранения базы данных.", 
                                directory = QtCore.QDir.currentPath(), 
                                filter = "All (*)")
@@ -44,10 +86,10 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
             self.log.info( "Создание новой базы данных%s"%( res[0] ) )
             self.db.createDatabase( res[0] )
         
-    def changeDatabase( self ):
+    def doChangeDatabase( self ):
         pass
 
-    def syncDatabase( self ):
+    def doSyncDatabase( self ):
         self.log.info( "Синхронизация базы данных с системой Честный знак" )
         res = ( self.api.do( 'get_gtins', {} ) )['data']['results']
         n = 0
@@ -73,14 +115,7 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
                                 item[0], item[1], item[2] ) )
             n = n + 1
             print( n )
-
-#        s = ''
-#        for item in gtin:
-#            s = s + "\nINSERT INTO GTINS VALUES ( '%s', '%s', '%s' );"%(
-#                                item[0], item[1], item[2] )
-#        self.db.runSql( s )
         self.log.info( 'OK' )
-        
 
     def doConsole( self ):
         self.log.info( "Показать консоль" )
@@ -92,10 +127,8 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
             self.isConsole = False
             self.console.hide()
             self.mdiArea.removeSubWindow( self.console )
-            
  
     def doOptions( self ):
-        
         self.log.warning( "Показать Настройки" )
         #options = options_window.OptionsWindow()
         #options.exec()

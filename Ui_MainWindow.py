@@ -57,8 +57,8 @@ class Ui_MainWindow(object):
         self.actChangeDatabase.setObjectName("actChangeDatabase")
         self.actSyncDatabase = QtWidgets.QAction(MainWindow)
         self.actSyncDatabase.setObjectName("actSyncDatabase")
-        self.actNewOtgruska = QtWidgets.QAction(MainWindow)
-        self.actNewOtgruska.setObjectName("actNewOtgruska")
+        self.actNewOtgruzka = QtWidgets.QAction(MainWindow)
+        self.actNewOtgruzka.setObjectName("actNewOtgruzka")
         self.actChangeOtgruzka = QtWidgets.QAction(MainWindow)
         self.actChangeOtgruzka.setObjectName("actChangeOtgruzka")
         self.menu_2.addAction(self.action_3)
@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.menu.addAction(self.actOptions)
         self.menu.addAction(self.actConsole)
         self.menu.addAction(self.actExit)
-        self.menu_4.addAction(self.actNewOtgruska)
+        self.menu_4.addAction(self.actNewOtgruzka)
         self.menu_4.addAction(self.actChangeOtgruzka)
         self.menuBar.addAction(self.menu.menuAction())
         self.menuBar.addAction(self.menu_4.menuAction())
@@ -98,7 +98,7 @@ class Ui_MainWindow(object):
         self.actCreateDatabase.setText(_translate("MainWindow", "Создать новую..."))
         self.actChangeDatabase.setText(_translate("MainWindow", "Сменить..."))
         self.actSyncDatabase.setText(_translate("MainWindow", "Синхронизировать с системой"))
-        self.actNewOtgruska.setText(_translate("MainWindow", "Новая отгрузка"))
+        self.actNewOtgruzka.setText(_translate("MainWindow", "Новая отгрузка"))
         self.actChangeOtgruzka.setText(_translate("MainWindow", "Выбрать отгрузку"))
 
 

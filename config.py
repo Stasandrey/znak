@@ -8,7 +8,7 @@ class Configuration:
                             'LogFileName':'znak_def.log', 
                             'LogToConsole':'True', 
                             'LogLevel':'INFO', 
-                            'AutoOpenConsoleWindow':'True'
+                            'AutoOpenConsoleWindow':'False'
                             }, 
                 'Database':{ 'Format':'QSQLITE', 
                              'DatabaseName':'main.db'
