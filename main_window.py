@@ -6,6 +6,8 @@ import random
 #import options_window
 import console_window
 import otgruzka_window
+import scan_codes_window
+
 import Ui_MainWindow
 
 class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
@@ -36,6 +38,15 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
         self.actExit.triggered.connect( self.close )
         self.actNewOtgruzka.triggered.connect( self.doNewOtgruzka )
         self.actChangeOtgruzka.triggered.connect( self.doChangeOtgruzka )
+        self.actScanCodes.triggered.connect( self.doScanCodes )
+    
+    def doScanCodes( self ):
+        self.scanCodes = scan_codes_window.ScanCodesWindow( self.log, self.cfg,
+                                                       self.db, self.api )
+        self.scanCodes.setAttribute( QtCore.Qt.WA_DeleteOnClose )
+        self.mdiArea.addSubWindow( self.scanCodes )
+        self.scanCodes.resize( 400, 400 )
+        self.scanCodes.show()
     
     def doNewOtgruzka( self ):
         s, ok = QtWidgets.QInputDialog.getText( self, "Новая отгрузка", 

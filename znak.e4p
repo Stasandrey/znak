@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project znak -->
-<!-- Saved: 2020-11-09, 16:15:43 -->
+<!-- Saved: 2020-11-10, 16:01:52 -->
 <!-- Copyright (C) 2020 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -17,6 +17,7 @@
     <Source>Ui_MainWindow.py</Source>
     <Source>Ui_OptionsWindow.py</Source>
     <Source>Ui_OtgruzkaWindow.py</Source>
+    <Source>Ui_ScanCodesWindow.py</Source>
     <Source>__init__.py</Source>
     <Source>ch_znak_api.py</Source>
     <Source>config.py</Source>
@@ -27,6 +28,8 @@
     <Source>main_window.py</Source>
     <Source>options_window.py</Source>
     <Source>otgruzka_window.py</Source>
+    <Source>scan_codes_window.py</Source>
+    <Source>test.py</Source>
     <Source>znak.ini</Source>
   </Sources>
   <Forms>
@@ -34,6 +37,7 @@
     <Form>MainWindow.ui</Form>
     <Form>OptionsWindow.ui</Form>
     <Form>OtgruzkaWindow.ui</Form>
+    <Form>ScanCodesWindow.ui</Form>
   </Forms>
   <Others>
     <Other>.gitignore</Other>

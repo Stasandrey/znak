@@ -68,12 +68,21 @@
    </widget>
    <widget class="QMenu" name="menu_5">
     <property name="title">
-     <string>ДС</string>
+     <string>Коды маркировки</string>
     </property>
+    <addaction name="actScanCodes"/>
+    <addaction name="actSyncCodes"/>
+   </widget>
+   <widget class="QMenu" name="menu_6">
+    <property name="title">
+     <string>Сканер</string>
+    </property>
+    <addaction name="actScannerOnline"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_4"/>
    <addaction name="menu_5"/>
+   <addaction name="menu_6"/>
   </widget>
   <action name="actExit">
    <property name="text">
@@ -139,6 +148,21 @@
   <action name="actChangeOtgruzka">
    <property name="text">
     <string>Выбрать отгрузку</string>
+   </property>
+  </action>
+  <action name="actScanCodes">
+   <property name="text">
+    <string>Сканировать коды маркировки...</string>
+   </property>
+  </action>
+  <action name="actSyncCodes">
+   <property name="text">
+    <string>Синхронизировать коды маркировки</string>
+   </property>
+  </action>
+  <action name="actScannerOnline">
+   <property name="text">
+    <string>Онлайн режим</string>
    </property>
   </action>
  </widget>
