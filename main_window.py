@@ -76,6 +76,7 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
                                                                 tbl, name )
                 self.otgruzka.setAttribute( QtCore.Qt.WA_DeleteOnClose )
                 self.mdiArea.addSubWindow( self.otgruzka )
+                self.otgruzka.resize( 400, 400 )
                 self.otgruzka.show()
     
     def doCreateDatabase( self ):
