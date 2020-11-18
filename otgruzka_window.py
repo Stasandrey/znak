@@ -19,15 +19,15 @@ class OtgruzkaWindow( QtWidgets.QWidget, Ui_OtgruzkaWindow.Ui_OtgruzkaWindow ):
         self.setupUi( self )
         self.stm = QtSql.QSqlRelationalTableModel( self )
         self.stm.setTable( self.tbl_name )
-        
-        
+
         self.stm.setHeaderData( 0, QtCore.Qt.Horizontal, 'Модель' )
         self.stm.setHeaderData( 1, QtCore.Qt.Horizontal, 'Размер' )
         self.stm.setHeaderData( 2, QtCore.Qt.Horizontal, 'GTIN' )
         self.stm.setHeaderData( 3, QtCore.Qt.Horizontal, 'Сырье' )
         self.stm.setHeaderData( 4, QtCore.Qt.Horizontal, 'Количество' )
-        
-        
+        self.stm.setHeaderData( 5, QtCore.Qt.Horizontal, 'Напечатано' )
+        self.stm.setHeaderData( 6, QtCore.Qt.Horizontal, 'Доступно' )
+
         self.stm.setRelation( 0, QtSql.QSqlRelation( "GTINS", 'GTIN', 'MODEL' ) )
         self.stm.setRelation( 1, QtSql.QSqlRelation( "GTINS", 'GTIN', 'SIZE' ) )
         
@@ -64,14 +64,21 @@ class OtgruzkaWindow( QtWidgets.QWidget, Ui_OtgruzkaWindow.Ui_OtgruzkaWindow ):
                         res = self.db.runSql( "SELECT GTIN FROM GTINS WHERE MODEL = '%s' AND SIZE = '%s'"%(
                                                 self.model.currentText(), self.size.currentText() ) )
                         print( res )
+
                         print( res[0]['GTIN'] )
                         #rec.setValue( 'GTIN', res[0]['GTIN'] )
                         #rec.setValue( 'MODEL', res[0]['GTIN'] )
                         #rec.setValue( 'SIZE', res[0]['GTIN'] )
                         #self.stm.insertRecord( -1, rec )
-                        self.db.runSql( "INSERT INTO %s  VALUES ('%s','%s','%s','%s',%s);"%(
+
+                        result = self.db.runSql( "SELECT * FROM CODES WHERE GTIN = '%s' AND SOURCE = '%s' AND STATE = '0';"%(
+                                                res[0]['GTIN'], self.source.currentText() ) )
+                        print( 'Available' )
+                        print( result )
+                        n = len( result )
+                        self.db.runSql( "INSERT INTO %s  VALUES ('%s','%s','%s','%s',%s, 0, %s);"%(
                                         self.tbl_name, res[0]['GTIN'], res[0]['GTIN'], res[0]['GTIN'], 
-                                        self.source.currentText(), self.count.value() ) )
+                                        self.source.currentText(), self.count.value(), n ) )
 #                        
                         self.stm.select()
 #    

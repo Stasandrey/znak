@@ -34,6 +34,9 @@ class ScanCodesWindow( QtWidgets.QMainWindow, Ui_ScanCodesWindow.Ui_ScanCodesWin
                         self.scanDS( item )
                 
     def scanNS( self, name ):
+        self.page = None
+        self.pdf = None
+        self.img = None
         doc = fitz.open( name )
         text = ''
         for page in doc:
@@ -65,10 +68,26 @@ class ScanCodesWindow( QtWidgets.QMainWindow, Ui_ScanCodesWindow.Ui_ScanCodesWin
             filename = gtin + '_' + filename
             code = { 'gtin':gtin, 'code':item, 'filename':filename }
             data.append( code )
-        for item in data:
-            print( item )
+
+        if self.img == None:
+            self.page = 0
+            self.pdf = name
+            self.image = Image(filename='%s[%s]' % (self.pdf, self.page), resolution=300)
         for i, item in enumerate( data ):
             self.readImageNs( name, i, "images/%s"%( data[i]['filename'] ), data[i]['gtin'] )
+        self.page = None
+        self.pdf = None
+        self.img = None
+        for item in data:
+            code = self.db.encode( item['code'] )
+            self.db.runSql( "INSERT INTO CODES VALUES ( '%s', '%s', '%s', 'НС', '0' );"%(
+                                item['gtin'],
+                                code,
+                                item['filename'] ) )
+
+            print( item )
+            print( self.db.decode( code ) )
+
 # --------------------------------------------------------------------------------------------
     def readImageNs( self, name, i, filename, gtin ):
         koord = [[0, 415],
@@ -87,13 +106,19 @@ class ScanCodesWindow( QtWidgets.QMainWindow, Ui_ScanCodesWindow.Ui_ScanCodesWin
         print(gtin[1:14])
         with open('ean.png', 'wb') as f:
             EAN13('%s' % (gtin[1:13]), writer=ImageWriter()).write(f)
-        with  Image(filename='%s[%s]' % (name, page), resolution=300) as img:
+
+#        with  Image(filename='%s[%s]' % (name, page), resolution=300) as img:
+        if page != self.page:
+            self.image = Image(filename='%s[%s]' % (self.pdf, page), resolution=300)
+            self.page = page
+
+        with self.image.clone() as img:
             img.convert('png')
             img.crop(0, koord[n][0], 709, koord[n][1])
             draw = Drawing()
             ean = Image(filename="./ean.png", resolution=300).clone()
             draw.composite(operator="over", left=5, top=235, width=round(ean.width * 0.65),
-                           height=round(ean.height * 0.65), image=ean)
+                       height=round(ean.height * 0.65), image=ean)
             draw(img)
             img.save(filename='%s.png' % (filename))
 

@@ -61,7 +61,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
             self.db.runSql("INSERT INTO OTGRUZKI VALUES ( '%s', '%s' );" % (
                 s, tblName))
             self.db.runSql(
-                "CREATE TABLE %s ( MODEL TEXT, SIZE TEXT, GTIN TEXT, SOURCE TEXT, NUMBER INTEGER );" % (tblName))
+                "CREATE TABLE %s ( MODEL TEXT, SIZE TEXT, GTIN TEXT, SOURCE TEXT, NUMBER INTEGER, PRINTED INTEGER, AVAILABLE INTEGER );" % (tblName))
             print("CREATE TABLE %s ( GTIN TEXT, SOURCE TEXT, NUMBER INTEGER );" % (tblName))
             self.log.info('Создание отгрузки %s TBL_NAME = %s' % (s, tblName))
             self.db.otgruska = tblName
@@ -124,11 +124,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
         self.db.runSql("DELETE FROM GTINS;")
         self.log.info("Запись в базуданных")
         n = 0
+        i = 0
         for item in gtin:
             self.db.runSql("INSERT INTO GTINS VALUES ( '%s', '%s', '%s' );" % (
                 item[0], item[1], item[2]))
             n = n + 1
             print(n)
+            i = i + 1
         self.log.info('OK')
 
     def doConsole(self):
