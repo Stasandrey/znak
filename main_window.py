@@ -69,7 +69,6 @@ class MainWindow( QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow ):
         res = self.db.runSql( "SELECT * FROM OTGRUZKI;" )
         for item in res:
             list.append( item['NAME'] )
-            
         if name == False:
             s, ok = QtWidgets.QInputDialog.getItem( self, "Смена отгрузки", 
                                                     "Выберите отгрузку", 
