@@ -43,7 +43,25 @@ class OtgruzkaWindow( QtWidgets.QWidget, Ui_OtgruzkaWindow.Ui_OtgruzkaWindow ):
         self.model.activated.connect( self.buildSizes )
         self.btnAdd.clicked.connect( self.add )
         self.btnDelete.clicked.connect( self.delete )
-    
+        self.prn.clicked.connect( self.doPrn )
+
+    def doPrn( self ):
+        rec = self.stm.record(self.table.currentIndex().row())
+        if rec.value( 4 ) >= rec.value( 6 ):
+            maximum = rec.value( 6 )
+            now = rec.value( 6 )
+        else:
+            maximum = rec.value( 4 )
+            now = rec.value( 4 )
+        n, ok = QtWidgets.QInputDialog.getInt( self, 'Печать кодов идентефикации',
+                                               'Модель %s размер %s. Максимум %s.'%(
+                                                rec.value( 0 ), rec.value( 1 ), maximum ),
+                                               value = now, min = 1, max = maximum)
+        if ok:
+            res = self.db.runSql( "SELECT * FROM CODES WHERE GTIN = '%s' AND STATE = '0' AND SOURCE = '%s';"%(
+                                   rec.value( 2 ), rec.value( 3 ) ) )
+            print( res )
+
     def delete( self ):
         rec = self.stm.record( self.table.currentIndex().row() ) 
         print( rec.value( 2 ) )

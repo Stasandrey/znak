@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/andrey/project/znak/OtgruzkaWindow.ui'
+# Form implementation generated from reading ui file 'OtgruzkaWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.1
 #
@@ -25,30 +25,33 @@ class Ui_OtgruzkaWindow(object):
         self.model.setGeometry(QtCore.QRect(10, 10, 111, 24))
         self.model.setObjectName("model")
         self.size = QtWidgets.QComboBox(OtgruzkaWindow)
-        self.size.setGeometry(QtCore.QRect(130, 10, 61, 24))
+        self.size.setGeometry(QtCore.QRect(120, 10, 61, 24))
         self.size.setObjectName("size")
         self.source = QtWidgets.QComboBox(OtgruzkaWindow)
-        self.source.setGeometry(QtCore.QRect(200, 10, 51, 24))
+        self.source.setGeometry(QtCore.QRect(180, 10, 51, 24))
         self.source.setObjectName("source")
         self.source.addItem("")
         self.source.setItemText(0, "")
         self.source.addItem("")
         self.source.addItem("")
         self.count = QtWidgets.QSpinBox(OtgruzkaWindow)
-        self.count.setGeometry(QtCore.QRect(290, 10, 46, 26))
+        self.count.setGeometry(QtCore.QRect(230, 10, 46, 26))
         self.count.setObjectName("count")
         self.btnAdd = QtWidgets.QPushButton(OtgruzkaWindow)
-        self.btnAdd.setGeometry(QtCore.QRect(350, 10, 31, 28))
+        self.btnAdd.setGeometry(QtCore.QRect(280, 10, 31, 28))
         font = QtGui.QFont()
         font.setPointSize(24)
         self.btnAdd.setFont(font)
         self.btnAdd.setObjectName("btnAdd")
         self.btnDelete = QtWidgets.QPushButton(OtgruzkaWindow)
-        self.btnDelete.setGeometry(QtCore.QRect(380, 10, 31, 28))
+        self.btnDelete.setGeometry(QtCore.QRect(310, 10, 31, 28))
         font = QtGui.QFont()
         font.setPointSize(24)
         self.btnDelete.setFont(font)
         self.btnDelete.setObjectName("btnDelete")
+        self.prn = QtWidgets.QPushButton(OtgruzkaWindow)
+        self.prn.setGeometry(QtCore.QRect(340, 10, 51, 28))
+        self.prn.setObjectName("prn")
 
         self.retranslateUi(OtgruzkaWindow)
         QtCore.QMetaObject.connectSlotsByName(OtgruzkaWindow)
@@ -60,13 +63,4 @@ class Ui_OtgruzkaWindow(object):
         self.source.setItemText(2, _translate("OtgruzkaWindow", "ДС"))
         self.btnAdd.setText(_translate("OtgruzkaWindow", "+"))
         self.btnDelete.setText(_translate("OtgruzkaWindow", "-"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    OtgruzkaWindow = QtWidgets.QWidget()
-    ui = Ui_OtgruzkaWindow()
-    ui.setupUi(OtgruzkaWindow)
-    OtgruzkaWindow.show()
-    sys.exit(app.exec_())
+        self.prn.setText(_translate("OtgruzkaWindow", "Печать"))
