@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 # -*- coding:utf-8 -*-
 
-from PyQt5 import QtWidgets, QtSql, QtCore
+from PyQt5 import QtWidgets, QtSql, QtCore, QtGui, QtPrintSupport
 import Ui_OtgruzkaWindow
 
 class OtgruzkaWindow( QtWidgets.QWidget, Ui_OtgruzkaWindow.Ui_OtgruzkaWindow ):
@@ -17,6 +17,9 @@ class OtgruzkaWindow( QtWidgets.QWidget, Ui_OtgruzkaWindow.Ui_OtgruzkaWindow ):
         self.log.info( "Конструктор окна отгрузки" )
         QtWidgets.QWidget.__init__( self, parent )
         self.setupUi( self )
+        self.printer = QtPrintSupport.QPrinter()
+        self.printer.setResolution( 203 )
+
         self.stm = QtSql.QSqlRelationalTableModel( self )
         self.stm.setTable( self.tbl_name )
 
@@ -60,7 +63,44 @@ class OtgruzkaWindow( QtWidgets.QWidget, Ui_OtgruzkaWindow.Ui_OtgruzkaWindow ):
         if ok:
             res = self.db.runSql( "SELECT * FROM CODES WHERE GTIN = '%s' AND STATE = '0' AND SOURCE = '%s';"%(
                                    rec.value( 2 ), rec.value( 3 ) ) )
-            print( res )
+            now = n
+            printed = []
+            for item in enumerate( res ):
+                if item[0] < now:
+                    printed.append( item[1] )
+            print( printed )
+            setup = QtPrintSupport.QPrintDialog( self.printer, self )
+            setup.setOption( QtPrintSupport.QAbstractPrintDialog.PrintToFile,
+                             on = False )
+            setup.setOption( QtPrintSupport.QAbstractPrintDialog.PrintPageRange,
+                             on = False )
+            setup.setOption( QtPrintSupport.QAbstractPrintDialog.PrintCollateCopies,
+                             on = False )
+            setup.setOption( QtPrintSupport.QAbstractPrintDialog.PrintCurrentPage,
+                             on = False )
+            setup.exec()
+
+            painter = QtGui.QPainter()
+            painter.begin( self.printer )
+
+            for item in enumerate( printed ):
+                print( item )
+
+                pixmap = QtGui.QPixmap( "images/%s.png" % (item[1]['FILENAME']) )
+                pixmap = pixmap.scaled( self.printer.width(),
+                                        self.printer.height(),
+                                        aspectRatioMode = QtCore.Qt.KeepAspectRatio )
+                painter.drawPixmap( 0, 0, pixmap )
+                self.db.runSql( "UPDATE CODES SET STATE = '%s' WHERE CODE = '%s';"%(
+                                            self.tbl_name,item[1]['CODE']  ) )
+                #self.db.runSql( "UPDATE CODES SET PRINTED = %s WHERE " )
+                if item[0] < now - 1:
+                    self.printer.newPage()
+            painter.end()
+
+
+
+
 
     def delete( self ):
         rec = self.stm.record( self.table.currentIndex().row() ) 

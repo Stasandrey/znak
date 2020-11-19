@@ -25,7 +25,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
         self.setupUi(self)
         self.setCentralWidget(self.mdiArea)
         self.log.info("Создание окна консоли")
-        self.console = console_window.ConsoleWindow(log, cfg)
+        self.console = QtWidgets.QMdiSubWindow()
+        self.console.resize( 600,400 )
+        self.console.setWidget(console_window.ConsoleWindow(log, cfg) )
+
         self.console.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.log.consoleWindow = self.console
         if self.cfg.get('Logging', 'AutoOpenConsoleWindow') == 'True':
@@ -43,11 +46,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
         self.actScanCodes.triggered.connect(self.doScanCodes)
 
     def doScanCodes(self):
-        self.scanCodes = scan_codes_window.ScanCodesWindow(self.log, self.cfg,
-                                                           self.db, self.api)
+
+        self.scanCodes = QtWidgets.QMdiSubWindow()
+        self.scanCodes.setWidget( scan_codes_window.ScanCodesWindow(self.log, self.cfg,
+                                                           self.db, self.api) )
         self.scanCodes.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+
+
         self.mdiArea.addSubWindow(self.scanCodes)
-        self.scanCodes.resize(400, 400)
+        self.scanCodes.resize( 300, 330 )
         self.scanCodes.show()
 
     def doNewOtgruzka(self):
@@ -84,12 +91,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
                 for i in res:
                     if name == i['NAME']:
                         tbl = i['TABLE_NAME']
-                self.otgruzka = otgruzka_window.OtgruzkaWindow(self.log, self.cfg,
+                self.otgruzka = QtWidgets.QMdiSubWindow()
+                self.otgruzka.resize( 600, 400 )
+                self.otgruzka.setWidget( otgruzka_window.OtgruzkaWindow(self.log, self.cfg,
                                                                self.db, self.api,
-                                                               tbl, name)
+                                                               tbl, name) )
                 self.otgruzka.setAttribute(QtCore.Qt.WA_DeleteOnClose)
                 self.mdiArea.addSubWindow(self.otgruzka)
-                self.otgruzka.resize(400, 400)
+
                 self.otgruzka.show()
 
     def doCreateDatabase(self):

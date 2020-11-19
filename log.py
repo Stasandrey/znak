@@ -29,7 +29,7 @@ class Log:
             print( "DEBUG:%s"%( s ) )
         if self.consoleWindow != None:
             if self.consoleLevel <= 3:
-                self.consoleWindow.text.insertPlainText( 'DEBUG:%s\n'%( s ) )
+                self.consoleWindow.widget().text.insertPlainText( 'DEBUG:%s\n'%( s ) )
                 self.consoleWindow.repaint()
     
     def info( self, s ):
@@ -38,8 +38,9 @@ class Log:
             print( "INFO:%s"%( s ) )
         if self.consoleWindow != None:
             if self.consoleLevel <= 4:
-                    self.consoleWindow.text.insertPlainText( 'INFO:%s\n'%( s ) )
-                    self.consoleWindow.repaint()
+                self.consoleWindow.widget().text.insertPlainText( 'INFO:%s\n' % (s) )
+                #self.consoleWindow.text.insertPlainText( 'INFO:%s\n'%( s ) )
+                self.consoleWindow.repaint()
             
     def warning( self, s ):
         logging.warning( s )
@@ -47,7 +48,8 @@ class Log:
             print( "WARNING:%s"%( s ) )
         if self.consoleWindow != None:
             if self.consoleLevel <= 2:
-                self.consoleWindow.text.insertPlainText( 'WARNING:%s\n'%( s ) )
+                self.consoleWindow.widget().text.insertPlainText( 'WARNING:%s\n' % (s) )
+                #self.consoleWindow.text.insertPlainText( 'WARNING:%s\n'%( s ) )
                 self.consoleWindow.repaint()
             
     def error( self, s ): 
@@ -56,7 +58,8 @@ class Log:
             print( "ERROR:%s"%( s ) )
         if self.consoleWindow != None:
             if self.consoleLevel <= 2:
-                self.consoleWindow.text.insertPlainText( 'ERROR:%s\n'%( s ) )
+                self.consoleWindow.widget().text.insertPlainText( 'ERROR:%s\n' % (s) )
+                #self.consoleWindow.text.insertPlainText( 'ERROR:%s\n'%( s ) )
                 self.consoleWindow.repaint()
             
 if __name__ == "__main__":
