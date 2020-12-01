@@ -3,46 +3,47 @@
 import fitz
 import datetime
 from barcode import EAN13
-from barcode.writer import  ImageWriter
+from barcode.writer import ImageWriter
 from wand.image import Image
 from wand.drawing import Drawing
 
 from PyQt5 import QtWidgets, QtCore
 import Ui_ScanCodesWindow
 
-class ScanCodesWindow( QtWidgets.QMainWindow, Ui_ScanCodesWindow.Ui_ScanCodesWindow ):
+
+class ScanCodesWindow(QtWidgets.QMainWindow, Ui_ScanCodesWindow.Ui_ScanCodesWindow):
     files = ''
     
-    def __init__( self, log, cfg, db, api, parent = None):
+    def __init__(self, log, cfg, db, api, parent=None):
         self.log = log
         self.cfg = cfg
         self.db = db
         self.api = api
-        self.log.info( "Конструктор окна сканирования кодов" )
-        QtWidgets.QWidget.__init__( self, parent )
-        self.setupUi( self )
-        self.chooseFiles.clicked.connect( self.doChooseFiles )
-        self.scan.clicked.connect( self.doScanCodes )
+        self.log.info("Конструктор окна сканирования кодов")
+        QtWidgets.QWidget.__init__(self, parent)
+        self.setupUi(self)
+        self.chooseFiles.clicked.connect(self.doChooseFiles)
+        self.scan.clicked.connect(self.doScanCodes)
 
-    def doScanCodes( self ):
+    def doScanCodes(self):
         if self.fileNames != '':
             if self.source.currentText() != '':
                 for item in self.fileNames:
                     if self.source.currentText() == 'НС':
-                        self.scanNS( item )
+                        self.scanNS(item)
                     elif self.source.currentText() == 'ДС':
-                        self.scanDS( item )
+                        self.scanDS(item)
                 
-    def scanNS( self, name ):
+    def scanNS(self, name):
         self.page = None
         self.pdf = None
         self.img = None
-        doc = fitz.open( name )
+        doc = fitz.open(name)
         text = ''
         for page in doc:
             # print( page.getImageList( full = True ) )
             text = text + page.getText()
-        items = text.split( '\n' )
+        items = text.split('\n')
         flag = 0
         s = ''
         table = []
@@ -50,7 +51,7 @@ class ScanCodesWindow( QtWidgets.QMainWindow, Ui_ScanCodesWindow.Ui_ScanCodesWin
             if flag == 1:
                 s = s + item
                 flag = 0
-                table.append( s )
+                table.append(s)
             if flag == 0:
                 if item[0:4] == '0104':
                     s = item
@@ -58,7 +59,7 @@ class ScanCodesWindow( QtWidgets.QMainWindow, Ui_ScanCodesWindow.Ui_ScanCodesWin
         data = []
         for item in table:
             gtin = item[2:16]
-            time = str( datetime.datetime.now() )
+            time = str(datetime.datetime.now())
             filename = ''
             for q in time:
                 if q == ':' or q == '-' or q == ' ' or q == '.':
@@ -66,30 +67,28 @@ class ScanCodesWindow( QtWidgets.QMainWindow, Ui_ScanCodesWindow.Ui_ScanCodesWin
                 else:
                     filename = filename + q
             filename = gtin + '_' + filename
-            code = { 'gtin':gtin, 'code':item, 'filename':filename }
-            data.append( code )
+            code = {'gtin': gtin, 'code': item, 'filename': filename}
+            data.append(code)
 
-        if self.img == None:
+        if self.img is None:
             self.page = 0
             self.pdf = name
             self.image = Image(filename='%s[%s]' % (self.pdf, self.page), resolution=300)
-        for i, item in enumerate( data ):
-            self.readImageNs( name, i, "images/%s"%( data[i]['filename'] ), data[i]['gtin'] )
+        for i, item in enumerate(data):
+            self.readImageNs(name, i, "images/%s" % (data[i]['filename']), data[i]['gtin'])
         self.page = None
         self.pdf = None
         self.img = None
         for item in data:
-            code = self.db.encode( item['code'] )
-            self.db.runSql( "INSERT INTO CODES VALUES ( '%s', '%s', '%s', 'НС', '0' );"%(
-                                item['gtin'],
-                                code,
-                                item['filename'] ) )
+            code = self.db.encode(item['code'])
+            self.db.runSql("INSERT INTO CODES VALUES ( '%s', '%s', '%s', 'НС', '0' );" %
+                           (item['gtin'], code, item['filename']))
 
-            print( item )
-            print( self.db.decode( code ) )
+            print(item)
+            print(self.db.decode(code))
 
 # --------------------------------------------------------------------------------------------
-    def readImageNs( self, name, i, filename, gtin ):
+    def readImageNs(self, name, i, filename, gtin):
         koord = [[0, 415],
                  [420, 835],
                  [840, 1255],
@@ -118,23 +117,22 @@ class ScanCodesWindow( QtWidgets.QMainWindow, Ui_ScanCodesWindow.Ui_ScanCodesWin
             draw = Drawing()
             ean = Image(filename="./ean.png", resolution=300).clone()
             draw.composite(operator="over", left=5, top=235, width=round(ean.width * 0.65),
-                       height=round(ean.height * 0.65), image=ean)
+                           height=round(ean.height * 0.65), image=ean)
             draw(img)
             img.save(filename='%s.png' % (filename))
-
-
 # --------------------------------------------------------------------------------------------
 
-    def scanDS( self, item ):
+    def scanDS(self, item):
         pass
 
-    def doChooseFiles( self ):
-        res = QtWidgets.QFileDialog.getOpenFileNames( parent = self, caption = "Выбор файлов", 
-                                                directory = QtCore.QDir.currentPath(), 
-                                                filter = "pdf (*.pdf)" )
+    def doChooseFiles(self):
+        res = QtWidgets.QFileDialog.getOpenFileNames(parent=self, caption="Выбор файлов",
+                                                     directory=QtCore.QDir.currentPath(),
+                                                     filter="pdf (*.pdf)")
         if res[1] != '':
             self.fileNames = res[0]
 
+
 if __name__ == "__main__":
-    print( "Этот модуль является частью приложения." )
-    print( "Для запуска приложения выполните main.py" )
+    print("Этот модуль является частью приложения.")
+    print("Для запуска приложения выполните main.py")

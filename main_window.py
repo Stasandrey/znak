@@ -26,8 +26,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
         self.setCentralWidget(self.mdiArea)
         self.log.info("Создание окна консоли")
         self.console = QtWidgets.QMdiSubWindow()
-        self.console.resize( 600,400 )
-        self.console.setWidget(console_window.ConsoleWindow(log, cfg) )
+        self.console.resize(600, 400)
+        self.console.setWidget(console_window.ConsoleWindow(log, cfg))
 
         self.console.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.log.consoleWindow = self.console
@@ -48,13 +48,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
     def doScanCodes(self):
 
         self.scanCodes = QtWidgets.QMdiSubWindow()
-        self.scanCodes.setWidget( scan_codes_window.ScanCodesWindow(self.log, self.cfg,
-                                                           self.db, self.api) )
+        self.scanCodes.setWidget(scan_codes_window.ScanCodesWindow(self.log, self.cfg,
+                                                                   self.db, self.api))
         self.scanCodes.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
-
         self.mdiArea.addSubWindow(self.scanCodes)
-        self.scanCodes.resize( 300, 330 )
+        self.scanCodes.resize(300, 330)
         self.scanCodes.show()
 
     def doNewOtgruzka(self):
@@ -68,7 +67,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
             self.db.runSql("INSERT INTO OTGRUZKI VALUES ( '%s', '%s' );" % (
                 s, tblName))
             self.db.runSql(
-                "CREATE TABLE %s ( MODEL TEXT, SIZE TEXT, GTIN TEXT, SOURCE TEXT, NUMBER INTEGER, PRINTED INTEGER, AVAILABLE INTEGER );" % (tblName))
+                "CREATE TABLE %s ( MODEL TEXT, SIZE TEXT, GTIN TEXT, SOURCE TEXT, NUMBER INTEGER,\\"
+                " PRINTED INTEGER, AVAILABLE INTEGER );" % (tblName))
             print("CREATE TABLE %s ( GTIN TEXT, SOURCE TEXT, NUMBER INTEGER );" % (tblName))
             self.log.info('Создание отгрузки %s TBL_NAME = %s' % (s, tblName))
             self.db.otgruska = tblName
@@ -79,7 +79,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
         res = self.db.runSql("SELECT * FROM OTGRUZKI;")
         for item in res:
             list.append(item['NAME'])
-        if name == False:
+        if name is False:
             s, ok = QtWidgets.QInputDialog.getItem(self, "Смена отгрузки",
                                                    "Выберите отгрузку",
                                                    list,
@@ -87,15 +87,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
             if ok:
                 name = s
         if name != '':
-            if name != False:
+            if name is not False:
                 for i in res:
                     if name == i['NAME']:
                         tbl = i['TABLE_NAME']
                 self.otgruzka = QtWidgets.QMdiSubWindow()
-                self.otgruzka.resize( 600, 400 )
-                self.otgruzka.setWidget( otgruzka_window.OtgruzkaWindow(self.log, self.cfg,
-                                                               self.db, self.api,
-                                                               tbl, name) )
+                self.otgruzka.resize(600, 400)
+                self.otgruzka.setWidget(otgruzka_window.OtgruzkaWindow(self.log, self.cfg, self.db,
+                                                                       self.api, tbl, name))
                 self.otgruzka.setAttribute(QtCore.Qt.WA_DeleteOnClose)
                 self.mdiArea.addSubWindow(self.otgruzka)
 
@@ -144,7 +143,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow.Ui_MainWindow):
 
     def doConsole(self):
         self.log.info("Показать консоль")
-        if self.isConsole == False:
+        if self.isConsole is False:
             self.isConsole = True
             self.mdiArea.addSubWindow(self.console)
             self.console.show()

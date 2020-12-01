@@ -4,22 +4,23 @@ import base64
 
 from PyQt5 import QtSql
 
+
 class Database:
     otgruzka = None
     
-    def __init__( self, log, cfg ):
+    def __init__(self, log, cfg):
         self.log = log
         self.cfg = cfg
-        self.log.info( "Конструктор Database " )
-        format = cfg.get( 'Database', "Format" )
-        self.log.info( "Формат базы данных %s"%( format ) )
-        self.db = QtSql.QSqlDatabase.addDatabase( format )
-        self.dbName = self.cfg.get( 'Database', 'DatabaseName' )
-        self.db.setDatabaseName( self.dbName )
+        self.log.info("Конструктор Database ")
+        format = cfg.get('Database', "Format")
+        self.log.info("Формат базы данных %s" % (format))
+        self.db = QtSql.QSqlDatabase.addDatabase(format)
+        self.dbName = self.cfg.get('Database', 'DatabaseName')
+        self.db.setDatabaseName(self.dbName)
         self.db.open()
         self.query = QtSql.QSqlQuery()
     
-    def getTables( self ):
+    def getTables(self):
         return self.db.tables()
     
     def createDatabase( self, name ):
